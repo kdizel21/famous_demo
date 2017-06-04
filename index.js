@@ -12,6 +12,6 @@ app.get('/', function (req, res) {
   res.render('./index')
 })
 
-app.listen(3000, function () {
-  console.log('You are now listening on port 3000!')
+app.listen(app.get('port'), function () {
+  console.log('You are now listening on port ', app.get('port'))
 })
