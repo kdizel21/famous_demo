@@ -12,6 +12,9 @@ export default function submit(state={
     case "SUBMIT_SUCCESS": {
       return {...state, active: "disabled"}
     }
+    case "CONTENT_EDITED": {
+      return {...state, active: "enabled"}
+    }
   }
   return state;
 };

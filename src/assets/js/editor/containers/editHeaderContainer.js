@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
-import { updateHeader } from '../actions/editorActions.js';
+import { updateHeader,getHeaderState } from '../actions/editorActions.js';
+import { contentEdited } from '../../submit/actions/submitActions.js';
 import EditHeaderComponent from '../components/editHeader.js';
 
 const mapStateToProps = (state) => {
@@ -10,8 +11,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    keyUpHandler: (e) => {
-      dispatch(updateHeader(e.target.value))
+    keyUpHandler: (e) => { console.log('keyup')
+      dispatch(updateHeader(e.target.value));
+      dispatch(contentEdited())
     }
   }
 }

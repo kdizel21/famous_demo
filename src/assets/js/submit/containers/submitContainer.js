@@ -1,34 +1,46 @@
 import { connect } from 'react-redux';
-// import { updateHeader } from '../../editor/actions/editorActions.js';
+import axios from 'axios';
 import { submitChanges,
   submitErorrHanlder,
   submitSuccess
  } from '../actions/submitActions.js';
 import SubmitButtonComponent from '../components/submitButton.js';
 
-const enableButton = (hText) => {
-  return "enabled"
-}
-
 const mapStateToProps = (state) => {
   return {
-    active: enableButton(state.editor.headerText)
+    active: state.submit.active,
+    headerText: state.editor.headerText
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    saveChanges: () => {
-      //grab html data
-      console.log('saving...')
-      dispatch(submitChanges())
+    saveChanges: (hText) => {
+      console.log('saveChanges called');
+      var user = 1;
+      // dispatch(submitChanges());
+      axios.put(`/api/entries/${user}`, {headerText:hText})
+        .then(res => {
+          dispatch(submitSuccess)
+        })
+        .catch(function (error) {
+          console.log(error);
+          // dispatch(submitErorrHanlder());
+        });
     }
   }
 }
 
+const mergeProps = (stateProps, propsFromDispatch, ownProps) => {
+  return Object.assign({}, stateProps, {
+    save: () => propsFromDispatch.saveChanges(stateProps.headerText)
+  })
+}
+
 const SubmitButton = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
+  mergeProps
 )(SubmitButtonComponent)
 
 export default SubmitButton

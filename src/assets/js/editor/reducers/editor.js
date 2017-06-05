@@ -1,4 +1,4 @@
-const initialState = {headerText:"Hello bobo"};
+const initialState = {headerText:"Hello Famous"};
 
 export default function editor(state=initialState, action){
   switch (action.type) {

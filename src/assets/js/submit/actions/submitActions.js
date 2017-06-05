@@ -18,3 +18,10 @@ export const submitSuccess = (data) => {
       payload:data
     };
 }
+
+export const contentEdited = (data) => {
+  return {
+      type:'CONTENT_EDITED',
+      payload:data
+    };
+}
