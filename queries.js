@@ -6,15 +6,7 @@ var options = {
 };
 
 var pgp = require('pg-promise')(options);
-var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/cms_entries'
-// var cn = {
-//     host: 'ec2-54-243-107-66.compute-1.amazonaws.com', // server name or IP address;
-//     port: 5432,
-//     database: 'db6gkt2u6nh7n1',
-//     user: 'frpcmoyzifxeyt',
-//     password: '957c0923401d1b54e3d90fbeb3c8e901640221594dae9ab6ffa2dc4964c22c62'
-// };
-// var connectionString = connectionString;
+var connectionString = process.env.DATABASE_URL + "?ssl=true" || 'postgres://localhost:5432/cms_entries'
 // var connectionString = 'postgres://frpcmoyzifxeyt:957c0923401d1b54e3d90fbeb3c8e901640221594dae9ab6ffa2dc4964c22c62@ec2-54-243-107-66.compute-1.amazonaws.com:5432/db6gkt2u6nh7n1/?ssl=true';
 
 var db = pgp(connectionString, function(err, client, done) {

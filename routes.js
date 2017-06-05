@@ -9,7 +9,7 @@ import { renderToString } from 'react-dom/server';
 import reducers from './src/assets/js/reducers';
 import MainComponent from "./src/assets/js/main/components/main.js";
 
-router.get('/api/entries', db.getAllEntries);
+// router.get('/api/entries', db.getAllEntries);
 router.get('/api/entriesTest', db.getAllEntriesTest);
 router.get('/api/entries/:id', db.getSingleEntry);
 router.post('/api/entries', db.createEntry);
