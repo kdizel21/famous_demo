@@ -2,21 +2,31 @@
 
 var options = {
   // Initialization Options
-  promiseLib: promise
+  promiseLib: promise,
+  error: function error(_error, e) {
+      if (e.cn) {
+          // A connection-related error;
+          //
+          // Connections are reported back with the password hashed,
+          // for safe errors logging, without exposing passwords.
+          console.log("CN:", e.cn);
+          console.log("EVENT:", _error.message || _error);
+      }
+  }
 };
 
 var pgp = require('pg-promise')(options);
-var connectionString = process.env.DATABASE_URL + "?ssl=true" || 'postgres://localhost:5432/cms_entries'
-// var connectionString = 'postgres://frpcmoyzifxeyt:957c0923401d1b54e3d90fbeb3c8e901640221594dae9ab6ffa2dc4964c22c62@ec2-54-243-107-66.compute-1.amazonaws.com:5432/db6gkt2u6nh7n1/?ssl=true';
+var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/cms_entries'
 
-var db = pgp(connectionString, function(err, client, done) {
-  console.log(err)
-  client.query('SELECT * FROM entries', function(err, result) {
-    done();
-    if(err) return console.error(err);
-    console.log(result.rows);
-  });
-});
+var db = pgp(connectionString);
+
+db.connect()
+  .then(function(obj) {
+    obj.done();
+  })
+  .catch(function(error) {
+    console.log("ERROR:", error.message || error);
+  })
 
 // add query functions
 

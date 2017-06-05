@@ -1,5 +1,50 @@
 #main {
-  p {
-    background: blue;
+  margin: 0 auto;
+  width: 60%;
+  h3 {
+    &.title {
+      text-align: center;
+    }
+  }
+}
+
+.stage-container {
+  padding: 10px;
+  border: 1px solid;
+  float: left;
+  width: 40%;
+  height: 100px;
+  margin: 5px;
+  h4 {
+    text-align: center;
+  }
+}
+
+.editor-container {
+  float: right;
+  width: 40%;
+  .title {
+    &.editor {
+      margin: 0 auto;
+    }
+  }
+}
+
+.button {
+  .submit {
+    width: 100%;
+    float: left;
+    text-align: center;
+    margin: 20px 0;
+    height: 40px;
+    &.enabled {
+      background: #92f592;
+      border: none;
+      border-radius: 3px;
+      &:hover {
+        background: #79d679;
+        cursor: pointer;
+      }
+    }
   }
 }

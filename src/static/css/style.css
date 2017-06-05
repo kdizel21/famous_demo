@@ -1,2 +1,35 @@
-#main p {
-  background: blue; }
+#main {
+  margin: 0 auto;
+  width: 60%; }
+  #main h3.title {
+    text-align: center; }
+
+.stage-container {
+  padding: 10px;
+  border: 1px solid;
+  float: left;
+  width: 40%;
+  height: 100px;
+  margin: 5px; }
+  .stage-container h4 {
+    text-align: center; }
+
+.editor-container {
+  float: right;
+  width: 40%; }
+  .editor-container .title.editor {
+    margin: 0 auto; }
+
+.button .submit {
+  width: 100%;
+  float: left;
+  text-align: center;
+  margin: 20px 0;
+  height: 40px; }
+  .button .submit.enabled {
+    background: #92f592;
+    border: none;
+    border-radius: 3px; }
+    .button .submit.enabled:hover {
+      background: #79d679;
+      cursor: pointer; }
