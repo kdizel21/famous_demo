@@ -1,8 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom"
 
-import EditHeaderContainer from "../containers/EditHeaderContainer.js";
-// import EditHeaderComponent from './editHeader.js';
+import EditHeaderContainer from "../containers/EditHeaderContainer";
 // import AddBodyComponent from './editor/components/addBody.js';
 // import AddFooterComponent from './editor/components/addFooter.js';
 
