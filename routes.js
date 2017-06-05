@@ -33,6 +33,11 @@ router.get('/', function (req, res) {
     // Send the rendered page back to the client
     res.render('./index', {app: html, initState:JSON.stringify(finalState)})
   });
+  const html = renderToString(
+    <div>hello d</div>
+  )
+
+  res.render('./index', {app: html, initState: {hi:1}})
 })
 
 module.exports = router;
