@@ -15,7 +15,7 @@ router.get('/api/entries/:id', db.getSingleEntry);
 router.post('/api/entries', db.createEntry);
 router.put('/api/entries/:id', db.updateEntry);
 router.delete('/api/entries/:id', db.removeEntry);
-router.get('/', function (req, res) {
+router.get('*', function (req, res) {
   db.getAllEntries(function(data) {
     //Testing
     //TODO retrieve all entries in db
@@ -33,11 +33,6 @@ router.get('/', function (req, res) {
     // Send the rendered page back to the client
     res.render('./index', {app: html, initState:JSON.stringify(finalState)})
   });
-  const html = renderToString(
-    <div>hello d</div>
-  )
-
-  res.render('./index', {app: html, initState: {hi:1}})
 })
 
 module.exports = router;
