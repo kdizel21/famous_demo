@@ -62,14 +62,13 @@
 
 	var _main2 = _interopRequireDefault(_main);
 
-	var _reducers = __webpack_require__(260);
+	var _reducers = __webpack_require__(264);
 
 	var _reducers2 = _interopRequireDefault(_reducers);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var store = (0, _redux.createStore)(_reducers2.default, window.initState);
-	// import store from "./store";
 
 	window.onload = function () {
 	  _reactDom2.default.render(_react2.default.createElement(
@@ -24248,6 +24247,10 @@
 
 	var _submit2 = _interopRequireDefault(_submit);
 
+	var _selectorMain = __webpack_require__(260);
+
+	var _selectorMain2 = _interopRequireDefault(_selectorMain);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -24278,6 +24281,7 @@
 	        ),
 	        _react2.default.createElement(_stageMain2.default, null),
 	        _react2.default.createElement(_editorMain2.default, null),
+	        _react2.default.createElement(_selectorMain2.default, null),
 	        _react2.default.createElement(_submit2.default, null)
 	      );
 	    }
@@ -24376,9 +24380,16 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	var hasSelected = function hasSelected(entryVal) {
+	  if (entryVal && entryVal.id) return true;
+
+	  return false;
+	};
+
 	var mapStateToProps = function mapStateToProps(state) {
 	  return {
-	    headerText: state.editor.headerText
+	    headerText: state.editor.headerText,
+	    entrySelected: hasSelected(state.main.currentEntry)
 	  };
 	};
 
@@ -24462,6 +24473,8 @@
 	});
 	exports.default = undefined;
 
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(1);
@@ -24492,19 +24505,25 @@
 	  _createClass(EditHeaderComponent, [{
 	    key: "render",
 	    value: function render() {
+	      var opts = {};
+	      if (this.props.entrySelected == false) {
+	        opts['disabled'] = 'disabled';
+	      }
+
 	      return _react2.default.createElement(
 	        "div",
 	        { className: "editor-option add-header" },
 	        _react2.default.createElement(
 	          "h4",
 	          null,
-	          "Add a title"
+	          "Edit a title"
 	        ),
-	        _react2.default.createElement("textarea", { onKeyUp: this.props.keyUpHandler,
+	        _react2.default.createElement("textarea", _extends({}, opts, {
+	          onKeyUp: this.props.keyUpHandler,
 	          rows: "3",
 	          cols: "40",
 	          placeholder: "Type a title name here",
-	          defaultValue: this.props.headerText })
+	          defaultValue: this.props.headerText }))
 	      );
 	    }
 	  }]);
@@ -24559,7 +24578,16 @@
 	  _createClass(StageMainComponent, [{
 	    key: "render",
 	    value: function render() {
-	      return _react2.default.createElement(_stagingContainer2.default, null);
+	      return _react2.default.createElement(
+	        "div",
+	        null,
+	        _react2.default.createElement(
+	          "h4",
+	          { className: "title stage" },
+	          "Staging Area"
+	        ),
+	        _react2.default.createElement(_stagingContainer2.default, null)
+	      );
 	    }
 	  }]);
 
@@ -24616,10 +24644,6 @@
 	var _reactDom = __webpack_require__(36);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
-
-	var _stagingContainer = __webpack_require__(229);
-
-	var _stagingContainer2 = _interopRequireDefault(_stagingContainer);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24743,15 +24767,16 @@
 	var mapStateToProps = function mapStateToProps(state) {
 	  return {
 	    active: state.submit.active,
-	    headerText: state.editor.headerText
+	    headerText: state.editor.headerText,
+	    currentEntry: state.main.currentEntry
 	  };
 	};
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
 	  return {
-	    saveChanges: function saveChanges(hText) {
+	    saveChanges: function saveChanges(hText, currentEntry) {
 	      console.log('saveChanges called');
-	      var user = 1;
+	      var user = currentEntry.id;
 	      // dispatch(submitChanges());
 	      _axios2.default.put('/api/entries/' + user, { headerText: hText }).then(function (res) {
 	        dispatch(_submitActions.submitSuccess);
@@ -24766,7 +24791,7 @@
 	var mergeProps = function mergeProps(stateProps, propsFromDispatch, ownProps) {
 	  return Object.assign({}, stateProps, {
 	    save: function save() {
-	      return propsFromDispatch.saveChanges(stateProps.headerText);
+	      return propsFromDispatch.saveChanges(stateProps.headerText, stateProps.currentEntry);
 	    }
 	  });
 	};
@@ -26377,18 +26402,217 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.default = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(36);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _selectorContainer = __webpack_require__(261);
+
+	var _selectorContainer2 = _interopRequireDefault(_selectorContainer);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var SelectorMainComponent = function (_React$Component) {
+	  _inherits(SelectorMainComponent, _React$Component);
+
+	  function SelectorMainComponent() {
+	    _classCallCheck(this, SelectorMainComponent);
+
+	    return _possibleConstructorReturn(this, (SelectorMainComponent.__proto__ || Object.getPrototypeOf(SelectorMainComponent)).apply(this, arguments));
+	  }
+
+	  _createClass(SelectorMainComponent, [{
+	    key: "render",
+	    value: function render() {
+	      return _react2.default.createElement(
+	        "div",
+	        { className: "entries-container" },
+	        _react2.default.createElement(
+	          "h4",
+	          { className: "title selector" },
+	          "Select an item"
+	        ),
+	        _react2.default.createElement(_selectorContainer2.default, null)
+	      );
+	    }
+	  }]);
+
+	  return SelectorMainComponent;
+	}(_react2.default.Component);
+
+	exports.default = SelectorMainComponent;
+
+/***/ }),
+/* 261 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _reactRedux = __webpack_require__(182);
+
+	var _main = __webpack_require__(262);
+
+	var _editorActions = __webpack_require__(225);
+
+	var _selector = __webpack_require__(263);
+
+	var _selector2 = _interopRequireDefault(_selector);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var mapStateToProps = function mapStateToProps(state) {
+	  return {
+	    entries: state.main.entries
+	  };
+	};
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
+	  return {
+	    getEntry: function getEntry(data, id) {
+	      var item = data.filter(function (entry) {
+	        return entry.id == id;
+	      });
+	      dispatch((0, _main.selectEntry)(item[0]));
+	      dispatch((0, _editorActions.updateHeader)(item[0].headertext));
+	    }
+	  };
+	};
+
+	var mergeProps = function mergeProps(stateProps, propsFromDispatch, ownProps) {
+	  console.log(ownProps, "-----");
+	  return Object.assign({}, stateProps, ownProps, {
+	    selectEntryItem: function selectEntryItem(e) {
+	      var id = parseInt(e.target.getAttribute("data-id"));
+	      propsFromDispatch.getEntry(stateProps.entries, id);
+	    }
+	  });
+	};
+
+	var EntrySelector = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps, mergeProps)(_selector2.default);
+
+	exports.default = EntrySelector;
+
+/***/ }),
+/* 262 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var selectEntry = exports.selectEntry = function selectEntry(obj) {
+	  return {
+	    // dispatch({
+	    type: 'ENTRY_SELECTED',
+	    payload: obj
+	  };
+	  // }
+	};
+
+/***/ }),
+/* 263 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(36);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var SelectorComponent = function (_React$Component) {
+	  _inherits(SelectorComponent, _React$Component);
+
+	  function SelectorComponent() {
+	    _classCallCheck(this, SelectorComponent);
+
+	    return _possibleConstructorReturn(this, (SelectorComponent.__proto__ || Object.getPrototypeOf(SelectorComponent)).apply(this, arguments));
+	  }
+
+	  _createClass(SelectorComponent, [{
+	    key: "render",
+	    value: function render() {
+	      var _this2 = this;
+
+	      var entries = this.props.entries.map(function (entry) {
+	        return _react2.default.createElement(
+	          "li",
+	          { key: entry.id, "data-id": entry.id, onClick: _this2.props.selectEntryItem },
+	          entry.headertext
+	        );
+	      });
+
+	      return _react2.default.createElement(
+	        "ul",
+	        { className: "entries-list" },
+	        entries
+	      );
+	    }
+	  }]);
+
+	  return SelectorComponent;
+	}(_react2.default.Component);
+
+	exports.default = SelectorComponent;
+
+/***/ }),
+/* 264 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 
 	var _redux = __webpack_require__(195);
 
-	var _mainReducer = __webpack_require__(261);
+	var _mainReducer = __webpack_require__(265);
 
 	var _mainReducer2 = _interopRequireDefault(_mainReducer);
 
-	var _editor = __webpack_require__(262);
+	var _editor = __webpack_require__(266);
 
 	var _editor2 = _interopRequireDefault(_editor);
 
-	var _submitReducer = __webpack_require__(263);
+	var _submitReducer = __webpack_require__(267);
 
 	var _submitReducer2 = _interopRequireDefault(_submitReducer);
 
@@ -26401,7 +26625,7 @@
 	});
 
 /***/ }),
-/* 261 */
+/* 265 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -26413,24 +26637,31 @@
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	exports.default = main;
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 	function main() {
 	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
-	    iframeLoaded: false,
-	    error: null
+	    entries: [],
+	    currentEntry: {}
 	  };
 	  var action = arguments[1];
 
 	  switch (action.type) {
-	    case "iframeLoaded":
+	    case "ENTRY_ADDED":
 	      {
-	        return _extends({}, state, { iframeLoaded: true });
+	        entries: return [].concat(_toConsumableArray(state), [action.payload]);
+	      }
+	    case "ENTRY_SELECTED":
+	      {
+	        return _extends({}, state, { currentEntry: action.payload });
 	      }
 	  }
 	  return state;
 	};
 
 /***/ }),
-/* 262 */
+/* 266 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -26442,7 +26673,7 @@
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	exports.default = editor;
-	var initialState = { headerText: "Hello Famous" };
+	var initialState = { headerText: "" };
 
 	function editor() {
 	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
@@ -26458,7 +26689,7 @@
 	}
 
 /***/ }),
-/* 263 */
+/* 267 */
 /***/ (function(module, exports) {
 
 	"use strict";

@@ -19,8 +19,8 @@ router.get('*', function (req, res) {
   db.getAllEntries(function(data) {
     //Testing
     //TODO retrieve all entries in db
-    console.log(data)
-    const store = createStore(reducers, {editor:{headerText: data[0].headertext}});
+    // console.log(data)
+    const store = createStore(reducers, {main:{entries:data}});
 
     // Render the component to a string
     const html = renderToString(
@@ -33,6 +33,7 @@ router.get('*', function (req, res) {
     // Send the rendered page back to the client
     res.render('./index', {app: html, initState:JSON.stringify(finalState)})
   });
+  // res.render('./index', {app: "<div>d</div>", initState:JSON.stringify({1:2})})
 })
 
 module.exports = router;

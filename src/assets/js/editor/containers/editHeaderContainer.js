@@ -3,9 +3,17 @@ import { updateHeader,getHeaderState } from '../actions/editorActions.js';
 import { contentEdited } from '../../submit/actions/submitActions.js';
 import EditHeaderComponent from '../components/editHeader.js';
 
+const hasSelected = (entryVal) => {
+  if(entryVal && entryVal.id)
+    return true
+
+  return false
+}
+
 const mapStateToProps = (state) => {
   return {
-    headerText: state.editor.headerText
+    headerText: state.editor.headerText,
+    entrySelected: hasSelected(state.main.currentEntry)
   }
 }
 

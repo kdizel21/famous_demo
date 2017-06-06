@@ -1,10 +1,16 @@
 export default function main(state={
-  iframeLoaded:false,
-  error: null
+  entries: [],
+  currentEntry: {}
 }, action){
   switch (action.type) {
-    case "iframeLoaded":{
-      return {...state, iframeLoaded: true}
+    case "ENTRY_ADDED":{
+      entries: return [
+        ...state,
+        action.payload
+      ]
+    }
+    case "ENTRY_SELECTED":{
+      return {...state, currentEntry: action.payload}
     }
   }
   return state;

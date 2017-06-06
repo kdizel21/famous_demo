@@ -33,3 +33,9 @@
     .button .submit.enabled:hover {
       background: #79d679;
       cursor: pointer; }
+
+.entries-container {
+  float: left;
+  width: 100%; }
+  .entries-container h4 {
+    text-align: left; }

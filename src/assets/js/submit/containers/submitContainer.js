@@ -9,15 +9,16 @@ import SubmitButtonComponent from '../components/submitButton.js';
 const mapStateToProps = (state) => {
   return {
     active: state.submit.active,
-    headerText: state.editor.headerText
+    headerText: state.editor.headerText,
+    currentEntry: state.main.currentEntry
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    saveChanges: (hText) => {
+    saveChanges: (hText, currentEntry) => {
       console.log('saveChanges called');
-      var user = 1;
+      var user = currentEntry.id;
       // dispatch(submitChanges());
       axios.put(`/api/entries/${user}`, {headerText:hText})
         .then(res => {
@@ -33,7 +34,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 const mergeProps = (stateProps, propsFromDispatch, ownProps) => {
   return Object.assign({}, stateProps, {
-    save: () => propsFromDispatch.saveChanges(stateProps.headerText)
+    save: () => propsFromDispatch.saveChanges(stateProps.headerText, stateProps.currentEntry)
   })
 }
 

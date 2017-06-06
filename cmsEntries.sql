@@ -13,3 +13,7 @@ CREATE TABLE entries (
 
 INSERT INTO entries (headerText)
   VALUES ('Hello CMS 1');
+INSERT INTO entries (headerText)
+  VALUES ('Hello CMS 2');
+INSERT INTO entries (headerText)
+  VALUES ('Hello CMS 3');     
