@@ -25,3 +25,7 @@ This is a very small demo designed to illustrate core skills, given a set time c
 * Sass
 * Webpack
 * Node
+
+Things to Do
+* Add lock column to rows
+* Everything else =)
